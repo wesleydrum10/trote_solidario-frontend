@@ -1,1 +1,0 @@
-# trote_solidario-frontend

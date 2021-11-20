@@ -3,6 +3,8 @@ import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
+import TableCell from '@mui/material/TableCell';
+import { FormGroup, Input } from '@mui/material';
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,7 +12,7 @@ interface ModalProps {
 }
 
 interface Notice {
-  id_aviso?: string; 
+  id_aviso?: string;
   cod_usuario: number;
   descricao_aviso: string;
   titulo_aviso: string;
@@ -25,29 +27,30 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU4ODMyOTMsImV4cCI6MTYzNTk2OTY5Mywic3ViIjoiOTcxZmZiYjYtNTk1Yi00NDg3LWEyZWUtMjM2NzlhM2JkMDNiIn0.6B1lKPspEHG-sjBeje2IdLe20v-dVhwJK9x6vIzJHnw'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0NDE5MDQsImV4cCI6MTYzNzUyODMwNCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.tOZadxrP_1ZIMDCGgzdQNDPBSFHXF1oyqErsxZ0y4Ag'
     }
   }
 
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const aux =  Object.assign(notice, {
+    const aux = Object.assign(notice, {
       [e.target.name]: e.target.value,
     });
 
     setNotice(aux);
   }
-  
+
   function createEvent(): void {
-    if (notice.id_aviso){
+    if (notice.id_aviso) {
       alert(`Este aviso já existe`)
     }
-    else if (!notice.id_aviso){
+    else if (!notice.id_aviso) {
       try {
         api
-          .post<Notice>(`/avisos`, notice, config)
-          .then (response => alert(`Inserção com sucesso`))
+          .post<Notice>(`/notices`, notice, config)
+          .then(response => alert(`Inserção com sucesso`))
         setNotice({} as Notice);
+        onRequestClose();
       }
       catch {
         alert(`Problema ao inserir aviso`)
@@ -61,57 +64,79 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
     >
-      <Form >
-        <Top>
-          <h2>Cadastrar Aviso</h2>
-          <GrClose onClick={onRequestClose} size={20} />
-        </Top>
-        <input
-          type="text"
-          name="titulo_aviso"
-          placeholder="Título "
-          value={notice.titulo_aviso}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="descricao_aviso"
-          placeholder="Descrição"
-          value={notice.descricao_aviso}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="data_aviso"
-          placeholder="Data"
-          value={notice.data_aviso}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="prazo_aviso"
-          placeholder="Prazo máximo"
-          value={notice.prazo_aviso}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="cod_usuario"
-          placeholder="Código usuário"
-          value={notice.cod_usuario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="departamento_aviso"
-          placeholder="Departamento"
-          value={notice.departamento_aviso}
-          onChange={handleChange}
-        />
-        <button onClick={createEvent} type="submit">
-          Cadastrar
-        </button>
-      </Form>
+      <>
+        <FormGroup row style={{ display: "flex", justifyContent: "space-between", margin: '0px 12px' }} onClick={() => onRequestClose()}>
+            <h2>Cadastrar Aviso</h2>
+            <GrClose onClick={onRequestClose} size={20} />
+        </FormGroup>
+        <FormGroup style={{ fontFamily: "Roboto" }}>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="titulo_aviso"
+              placeholder="Título "
+              defaultValue={notice.titulo_aviso}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth 
+              type="text"
+              name="descricao_aviso"
+              placeholder="Descrição"
+              defaultValue={notice.descricao_aviso}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth 
+              type="text"
+              name="data_aviso"
+              placeholder="Data"
+              defaultValue={notice.data_aviso}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth 
+              type="text"
+              name="prazo_aviso"
+              placeholder="Prazo máximo"
+              defaultValue={notice.prazo_aviso}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth 
+              type="number"
+              name="cod_usuario"
+              placeholder="Código usuário"
+              defaultValue={notice.cod_usuario}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="departamento_aviso"
+              placeholder="Departamento"
+              defaultValue={notice.departamento_aviso}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <Form>
+            <button onClick={createEvent} type="submit">
+              Cadastrar
+            </button>
+          </Form>
+        </FormGroup>
+      </>
     </Modal >
   )
 }

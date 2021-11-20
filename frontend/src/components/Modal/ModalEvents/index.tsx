@@ -1,10 +1,10 @@
-import { FormEvent, useState, useEffect } from 'react';
-import { Form, Top } from '../stylesModal'
+import { FormEvent, useState } from 'react';
+import { Form } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
 import TableCell from '@mui/material/TableCell';
-import { FormGroup, Input, Typography } from '@mui/material';
+import { FormGroup, Input } from '@mui/material';
 
 interface ModalProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzczNjY5OTgsImV4cCI6MTYzNzQ1MzM5OCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.Ui6F9-SLv0cZbr-XlHc4hJu2Y_-ip9MAQ6J1u1tNnlQ'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0MjY5NzYsImV4cCI6MTYzNzUxMzM3Niwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.5zxm7FInoyIoInzbSz0RTHZEzq2c2mNUYUfDuAhYJro'
     }
   }
 
@@ -50,7 +50,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
           .post<Events>(`/events`, event, config)
           .then(response => alert(`Inserção com sucesso`))
         setEvent({} as Events);
-        onRequestClose();
+        onRequestClose(); 
       }
       catch {
         alert(`Problema ao inserir evento`)
@@ -71,7 +71,6 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
         </FormGroup>
         <FormGroup style={{ fontFamily: "Roboto" }}>
           <TableCell >
-
             <Input
               fullWidth
               type="text"
@@ -82,7 +81,6 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
             />
           </TableCell>
           <TableCell>
-
             <Input
               fullWidth
               type="text"
@@ -93,7 +91,6 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
             />
           </TableCell>
           <TableCell>
-
             <Input
               fullWidth
               type="text"

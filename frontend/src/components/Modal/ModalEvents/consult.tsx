@@ -8,7 +8,9 @@ import { FiEdit2 } from 'react-icons/fi';
 import { Form } from '../stylesModal';
 import moment from 'moment';
 import { FormGroup, Input, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Loading } from '../../Loading';
+// import { useEvents } from '../../../hooks/useEvent'
+
+Modal.setAppElement('#root')
 
 interface ModalProps {
   isOpen: boolean;
@@ -27,13 +29,12 @@ interface Event {
 export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
   const [event, setEvent] = useState<Event>({} as Event);
-  const [actualEvent, setActualEvent] = useState<Event>({} as Event);
   const [events, setEvents] = useState<Event[]>([]);
   const [open, setOpen] = useState(false);
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzczNjg3OTAsImV4cCI6MTYzNzQ1NTE5MCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.3stXV2q9Tg2bhDQU4_NhDfxkW7t-MxwnxeLLNxHQJ1U'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0MjY5NzYsImV4cCI6MTYzNzUxMzM3Niwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.5zxm7FInoyIoInzbSz0RTHZEzq2c2mNUYUfDuAhYJro'
     }
   }
 
@@ -42,7 +43,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
       [e.target.name]: e.target.value,
     });
 
-    setActualEvent(aux);
+    setEvent(aux);
   }
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
     >
       <Top>
         <h2>Eventos</h2>
-        <GrClose size={20} onClick={onRequestClose} />
+        <GrClose size={18} onClick={onRequestClose} />
       </Top>
       <TableContainer>
         <TableHead>
@@ -132,14 +133,14 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
         <TableBody>
           {events.map(event => (
             <TableRow key={event.id_evento}>
-              <TableCell>
+              <TableCell align="center">
                 <AiOutlineCloseCircle
                   color="red"
-                  fontSize={20}
+                  fontSize={16}
                   onClick={() => deleteEvent(event.id_evento)}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <FiEdit2 onClick={() => updateEvent(event)} />
               </TableCell>
               <TableCell>{event.titulo_evento}</TableCell>
@@ -151,7 +152,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
           ))}
         </TableBody>
         {open && (
-          <>
+          <TableContainer style={{background: "var(--backgroundBody)", borderRadius: "10px", marginTop: "10px", paddingBottom: "10px"}}>
             <Top>
               <h2>Editar</h2>
               <GrClose size={20} onClick={() => setOpen(false)} />
@@ -213,7 +214,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
                 Atualizar
               </button>
             </Form>
-          </>
+          </TableContainer>
         )}
       </TableContainer>
     </Modal >

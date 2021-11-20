@@ -1,10 +1,12 @@
-import { FormEvent, useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Top } from '../stylesConsult'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
+
+Modal.setAppElement('#root')
 
 interface ModalProps {
   isOpen: boolean;
@@ -24,53 +26,7 @@ interface Notice {
 export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
   const [notice, setNotice] = useState<Notice>({} as Notice);
-  const [notices, setNotices] = useState<Notice[]>([
-    {
-      id_aviso: '1',
-      cod_usuario: 23993,
-      descricao_aviso: 'Todos deverão entregar os kits, nos prazo estabelecido',
-      titulo_aviso: 'Entrega dos Kits',
-      prazo_aviso: '12/12/2021',
-      data_aviso: '10/11/2021',
-      departamento_aviso: 'Coordenação'
-    },
-    {
-      id_aviso: '1',
-      cod_usuario: 23993,
-      descricao_aviso: 'Todos deverão entregar os kits, nos prazo estabelecido',
-      titulo_aviso: 'Entrega dos Kits',
-      prazo_aviso: '12/12/2021',
-      data_aviso: '10/11/2021',
-      departamento_aviso: 'Coordenação'
-    },
-    {
-      id_aviso: '1',
-      cod_usuario: 23993,
-      descricao_aviso: 'Todos deverão entregar os kits, nos prazo estabelecido',
-      titulo_aviso: 'Entrega dos Kits',
-      prazo_aviso: '12/12/2021',
-      data_aviso: '10/11/2021',
-      departamento_aviso: 'Coordenação'
-    },
-    {
-      id_aviso: '1',
-      cod_usuario: 23993,
-      descricao_aviso: 'Todos deverão entregar os kits, nos prazo estabelecido',
-      titulo_aviso: 'Entrega dos Kits',
-      prazo_aviso: '12/12/2021',
-      data_aviso: '10/11/2021',
-      departamento_aviso: 'Coordenação'
-    },
-    {
-      id_aviso: '1',
-      cod_usuario: 23993,
-      descricao_aviso: 'Todos deverão entregar os kits, nos prazo estabelecido',
-      titulo_aviso: 'Entrega dos Kits',
-      prazo_aviso: '12/12/2021',
-      data_aviso: '10/11/2021',
-      departamento_aviso: 'Coordenação'
-    },
-  ]);
+  const [notices, setNotices] = useState<Notice[]>([]);
 
   const config = {
     headers: {
@@ -78,6 +34,16 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
     }
   }
 
+  function load() {
+    api.get<Notice[]>('/notices')
+    .then(res => setNotices(res.data))
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
+
+  console.log('Notices', notices)
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const aux = Object.assign(notice, {

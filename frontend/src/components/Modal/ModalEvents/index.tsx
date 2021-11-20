@@ -1,8 +1,10 @@
-import { FormEvent, useState, useContext } from 'react';
-import { Container, Top } from '../stylesModal'
+import { FormEvent, useState, useEffect } from 'react';
+import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
+import TableCell from '@mui/material/TableCell';
+import { FormGroup, Input, Typography } from '@mui/material';
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,7 +12,7 @@ interface ModalProps {
 }
 
 interface Events {
-  id_evento?: string; 
+  id_evento?: string;
   cod_sala: number;
   cod_usuario: number;
   data_evento: string;
@@ -24,32 +26,34 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU4ODMyOTMsImV4cCI6MTYzNTk2OTY5Mywic3ViIjoiOTcxZmZiYjYtNTk1Yi00NDg3LWEyZWUtMjM2NzlhM2JkMDNiIn0.6B1lKPspEHG-sjBeje2IdLe20v-dVhwJK9x6vIzJHnw'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzczNjY5OTgsImV4cCI6MTYzNzQ1MzM5OCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.Ui6F9-SLv0cZbr-XlHc4hJu2Y_-ip9MAQ6J1u1tNnlQ'
     }
   }
 
-
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const aux =  Object.assign(event, {
+    const aux = Object.assign(event, {
       [e.target.name]: e.target.value,
     });
 
     setEvent(aux);
   }
-  
-  function createEvent(): void {
-    if (event.id_evento){
-      alert(`Problema ao adicionar usuário`)
+
+  function createEvent(e: FormEvent): void {
+    e.preventDefault()
+
+    if (event.id_evento) {
+      alert(`Evento já existe`)
     }
-    else if (!event.id_evento){
+    else if (!event.id_evento) {
       try {
         api
           .post<Events>(`/events`, event, config)
-          .then (response => alert(`Inserção com sucesso`))
+          .then(response => alert(`Inserção com sucesso`))
         setEvent({} as Events);
+        onRequestClose();
       }
       catch {
-        alert(`Problema ao inserir usuário`)
+        alert(`Problema ao inserir evento`)
       }
     }
   }
@@ -60,50 +64,71 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
     >
-      <Container >
-        <Top>
-          <h2>Cadastrar Evento</h2>
-          <GrClose onClick={onRequestClose} size={20} />
-        </Top>
-        <input
-          type="text"
-          name="titulo_evento"
-          placeholder="Título "
-          value={event.titulo_evento}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="descricao_evento"
-          placeholder="Descrição"
-          value={event.descricao_evento}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="data_evento"
-          placeholder="Data"
-          value={event.data_evento}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="cod_usuario"
-          placeholder="Código usuário"
-          value={event.cod_usuario}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="cod_sala"
-          placeholder="Número da sala"
-          value={event.cod_sala}
-          onChange={handleChange}
-        />
-        <button onClick={createEvent} type="submit">
-          Cadastrar
-        </button>
-      </Container>
+      <>
+        <FormGroup row style={{display: "flex", justifyContent: "space-between", margin: '0px 12px'}} onClick={() => onRequestClose()}>
+          <h2>Cadastrar</h2>
+          <GrClose size={20} />
+        </FormGroup>
+        <FormGroup style={{ fontFamily: "Roboto" }}>
+          <TableCell >
+
+            <Input
+              fullWidth
+              type="text"
+              name="titulo_evento"
+              placeholder="Título "
+              defaultValue={event.titulo_evento}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+
+            <Input
+              fullWidth
+              type="text"
+              name="descricao_evento"
+              placeholder="Descrição"
+              defaultValue={event.descricao_evento}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+
+            <Input
+              fullWidth
+              type="text"
+              name="data_evento"
+              placeholder="Data  dd/mm/aaaa"
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="number"
+              name="cod_usuario"
+              placeholder="Código usuário"
+              defaultValue={event.cod_usuario}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="number"
+              name="cod_sala"
+              defaultValue={event.cod_sala}
+              placeholder="Número da sala"
+              onChange={handleChange}
+            />
+          </TableCell>
+        </FormGroup>
+        <Form>
+          <button onClick={createEvent} type="submit">
+            Atualizar
+          </button>
+        </Form>
+      </>
     </Modal >
   )
 }

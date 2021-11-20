@@ -1,17 +1,21 @@
-import { FormEvent, useState, useContext, useEffect } from 'react';
-import { Container, Top } from '../stylesConsult'
+import { useState, useEffect } from 'react';
+import { Top } from '../stylesConsult'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
+import { Form } from '../stylesModal';
+import moment from 'moment';
+import { FormGroup, Input, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Loading } from '../../Loading';
 
 interface ModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-interface Events {
+interface Event {
   id_evento?: string;
   cod_sala: number;
   cod_usuario: number;
@@ -22,54 +26,84 @@ interface Events {
 
 export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
-  const [event, setEvent] = useState<Events>({} as Events);
-  const [events, setEvents] = useState<Events[]>([
-    // {
-    //   id_evento: "1",
-    //   cod_sala: 1,
-    //   cod_usuario: 22993,
-    //   data_evento: '12/12/2021',
-    //   descricao_evento: 'Entrega de presentes de natal',
-    //   titulo_evento: 'Natal solidário',
-    // },
-  ]);
-  
+  const [event, setEvent] = useState<Event>({} as Event);
+  const [actualEvent, setActualEvent] = useState<Event>({} as Event);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [open, setOpen] = useState(false);
+
   const config = {
     headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU4ODMyOTMsImV4cCI6MTYzNTk2OTY5Mywic3ViIjoiOTcxZmZiYjYtNTk1Yi00NDg3LWEyZWUtMjM2NzlhM2JkMDNiIn0.6B1lKPspEHG-sjBeje2IdLe20v-dVhwJK9x6vIzJHnw'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzczNjg3OTAsImV4cCI6MTYzNzQ1NTE5MCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.3stXV2q9Tg2bhDQU4_NhDfxkW7t-MxwnxeLLNxHQJ1U'
     }
+  }
+
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const aux = Object.assign(event, {
+      [e.target.name]: e.target.value,
+    });
+
+    setActualEvent(aux);
   }
 
   useEffect(() => {
     try {
       api
-        .get<Events[]>(`/events`, config)
+        .get<Event[]>(`/events`, config)
         .then(response => setEvents(response.data))
         .catch(() => {
           console.error('Não listou os eventos')
         })
-
     }
     catch {
       alert(`Problema ao consultar eventos`)
     }
-  }, [])
+  }, [event])
 
-
-  function createEvent(): void {
-    if (event.id_evento) {
-      alert(`Evento já existe`)
-    }
-    else if (!event.id_evento) {
+  function deleteEvent(id: string | undefined): void {
+    const resp = window.confirm(`Confirma a exclusão do evento ${id}`)
+    if (resp) {
       try {
         api
-          .post<Events>(`/events`, event, config)
-          .then(response => alert(`Inserção com sucesso`))
-        setEvent({} as Events);
+          .delete<Event>(`/events/${id}`, config)
+          .then(response => alert(`Remoção com sucesso `))
+        setEvent({} as Event);
       }
       catch {
-        alert(`Problema ao inserir evento`)
+        alert(`Problema ao remover evento`)
       }
+    }
+
+  }
+
+  function updatedingEvent(): void {
+
+    let updateEvent = {
+      cod_sala: event.cod_sala,
+      cod_usuario: event.cod_usuario,
+      data_evento: event.data_evento,
+      descricao_evento: event.descricao_evento,
+      titulo_evento: event.titulo_evento
+    }
+
+    try {
+      api
+        .put<Event>(`/events/${event.id_evento}`, updateEvent, config)
+        .then(response => alert(`Atualização com sucesso`))
+      setEvent({} as Event)
+      onRequestClose()
+      setOpen(false)
+    }
+    catch {
+      alert(`Problema ao atualizar evento`)
+    }
+  }
+
+  function updateEvent(evento: Event | undefined): void {
+    setOpen(true)
+
+    if (evento) {
+      const aux = evento
+      setEvent(aux)
     }
   }
 
@@ -79,38 +113,109 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
     >
-      <Container>
-        <Top>
-          <h2>Eventos</h2>
-          <GrClose size={20} onClick={onRequestClose} />
-        </Top>
-        <table>
-          <thead>
-            <tr>
-              <th>Remover</th>
-              <th>Editar</th>
-              <th>Título</th>
-              <th>Sala</th>
-              <th>Cod Usuário</th>
-              <th>Data</th>
-              <th><span>Descrição</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map(event => (
-              <tr key={event.id_evento}>
-                <td><AiOutlineCloseCircle color="red" fontSize={20} /></td>
-                <td><FiEdit2 /></td>
-                <td>{event.titulo_evento}</td>
-                <td>{event.cod_sala}</td>
-                <td>{event.cod_usuario}</td>
-                <td>{event.data_evento}</td>
-                <td>{event.descricao_evento}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Container>
+      <Top>
+        <h2>Eventos</h2>
+        <GrClose size={20} onClick={onRequestClose} />
+      </Top>
+      <TableContainer>
+        <TableHead>
+          <TableRow>
+            <TableCell>Remover</TableCell>
+            <TableCell>Editar</TableCell>
+            <TableCell>Título</TableCell>
+            <TableCell>Sala</TableCell>
+            <TableCell>Cod Usuário</TableCell>
+            <TableCell>Data</TableCell>
+            <TableCell>Descrição</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {events.map(event => (
+            <TableRow key={event.id_evento}>
+              <TableCell>
+                <AiOutlineCloseCircle
+                  color="red"
+                  fontSize={20}
+                  onClick={() => deleteEvent(event.id_evento)}
+                />
+              </TableCell>
+              <TableCell>
+                <FiEdit2 onClick={() => updateEvent(event)} />
+              </TableCell>
+              <TableCell>{event.titulo_evento}</TableCell>
+              <TableCell>{event.cod_sala}</TableCell>
+              <TableCell>{event.cod_usuario}</TableCell>
+              <TableCell>{moment(new Date(event.data_evento)).format("DD/MM/YYYY")}</TableCell>
+              <TableCell>{event.descricao_evento}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        {open && (
+          <>
+            <Top>
+              <h2>Editar</h2>
+              <GrClose size={20} onClick={() => setOpen(false)} />
+            </Top>
+            <FormGroup row style={{ fontFamily: "Roboto" }}>
+              <TableCell>
+                <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Título</Typography>
+                <Input
+                  type="text"
+                  name="titulo_evento"
+                  placeholder="Título "
+                  defaultValue={event.titulo_evento}
+                  onChange={handleChange}
+                />
+              </TableCell>
+              <TableCell>
+                <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Descrição</Typography>
+                <Input
+                  type="text"
+                  name="descricao_evento"
+                  placeholder="Descrição"
+                  defaultValue={event.descricao_evento}
+                  onChange={handleChange}
+                />
+              </TableCell>
+              <TableCell>
+                <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Data</Typography>
+                <Input
+                  type="text"
+                  name="data_evento"
+                  placeholder="Data"
+                  defaultValue={moment(new Date(event.data_evento)).format("DD/MM/YYYY")}
+                  onChange={handleChange}
+                />
+              </TableCell>
+              <TableCell>
+                <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Código usuário</Typography>
+                <Input
+                  type="number"
+                  name="cod_usuario"
+                  placeholder="Código usuário"
+                  defaultValue={event.cod_usuario}
+                  onChange={handleChange}
+                />
+              </TableCell>
+              <TableCell>
+                <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Sala</Typography>
+                <Input
+                  type="number"
+                  name="cod_sala"
+                  defaultValue={event.cod_sala}
+                  placeholder="Número da sala"
+                  onChange={handleChange}
+                />
+              </TableCell>
+            </FormGroup>
+            <Form>
+              <button onClick={updatedingEvent} type="submit">
+                Atualizar
+              </button>
+            </Form>
+          </>
+        )}
+      </TableContainer>
     </Modal >
   )
 }

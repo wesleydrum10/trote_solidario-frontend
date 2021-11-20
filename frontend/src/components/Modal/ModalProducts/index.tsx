@@ -1,5 +1,5 @@
-import { FormEvent, useState, useContext } from 'react';
-import { Container, Top } from '../stylesModal'
+import { useState } from 'react';
+import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
@@ -10,7 +10,7 @@ interface ModalProps {
 }
 
 interface Product {
-  id_produto?: string; 
+  id_produto?: string;
   cod_usuario: number;
   descricao_produto: string;
   nome_produto: string;
@@ -29,22 +29,22 @@ export const ModalProducts: React.FC<ModalProps> = ({ isOpen, onRequestClose }) 
 
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const aux =  Object.assign(product, {
+    const aux = Object.assign(product, {
       [e.target.name]: e.target.value,
     });
 
     setProduct(aux);
   }
-  
+
   function createProduct(): void {
-    if (product.id_produto){
+    if (product.id_produto) {
       alert(`Este produto já existe`)
     }
-    else if (!product.id_produto){
+    else if (!product.id_produto) {
       try {
         api
           .post<Product>(`/produtos`, product, config)
-          .then (response => alert(`Inserção com sucesso`))
+          .then(response => alert(`Inserção com sucesso`))
         setProduct({} as Product);
       }
       catch {
@@ -59,7 +59,7 @@ export const ModalProducts: React.FC<ModalProps> = ({ isOpen, onRequestClose }) 
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
     >
-      <Container >
+      <Form >
         <Top>
           <h2>Cadastrar Produto</h2>
           <GrClose onClick={onRequestClose} size={20} />
@@ -95,7 +95,7 @@ export const ModalProducts: React.FC<ModalProps> = ({ isOpen, onRequestClose }) 
         <button onClick={createProduct} type="submit">
           Cadastrar
         </button>
-      </Container>
+      </Form>
     </Modal >
   )
 }

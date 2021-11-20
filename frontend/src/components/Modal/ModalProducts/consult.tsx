@@ -1,5 +1,5 @@
-import { FormEvent, useState, useContext } from 'react';
-import { Container, Top } from '../stylesModal'
+import { useState } from 'react';
+import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
@@ -59,7 +59,7 @@ export const ModalProducts: React.FC<ModalProps> = ({ isOpen, onRequestClose }) 
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
     >
-      <Container >
+      <Form >
         <Top>
           <h2>Cadastrar Produto</h2>
           <GrClose onClick={onRequestClose} size={20} />
@@ -95,7 +95,7 @@ export const ModalProducts: React.FC<ModalProps> = ({ isOpen, onRequestClose }) 
         <button onClick={createProduct} type="submit">
           Cadastrar
         </button>
-      </Container>
+      </Form>
     </Modal >
   )
 }

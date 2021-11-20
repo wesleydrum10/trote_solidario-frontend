@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BsCalendarDate } from "react-icons/bs"
 import { Button } from "../../components/Button"
 import { CardLight } from "../../components/CardLight"
@@ -20,6 +20,10 @@ export const Events: React.FC = () => {
 
   const [open, setOpen] = useState(false)
   const [openConsult, setOpenConsult] = useState(false)
+
+  useEffect(() =>{
+
+  },[open, openConsult])
 
   function modalOpen() {
     setOpen(true)

@@ -153,7 +153,7 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
                 />
               </TableCell>
               <TableCell/>
-              <TableCell>
+              <TableCell align="center">
                 <FiEdit2 onClick={() => updateUser(user)} />
               </TableCell>
               <TableCell/>

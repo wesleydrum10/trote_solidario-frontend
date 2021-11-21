@@ -43,6 +43,7 @@ export const Form = styled.form`
 `
 export const Top = styled.div `
   display: flex;
+  margin: 5px 15px;
   justify-content: space-between;
 
 `

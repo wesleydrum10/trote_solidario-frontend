@@ -4,7 +4,7 @@ import { api } from '../services/api';
 interface Event {
   id_evento?: string;
   cod_sala: number;
-  cod_usuario: number;
+  cod_usuario: string;
   data_evento: string;
   descricao_evento: string;
   titulo_evento: string;

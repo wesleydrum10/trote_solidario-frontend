@@ -7,10 +7,18 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
 import { Form } from '../stylesModal';
 import moment from 'moment';
-import { FormGroup, Input, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-// import { useEvents } from '../../../hooks/useEvent'
+import { FormGroup, Input, styled, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 Modal.setAppElement('#root')
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: "var(--backgroundBody)",
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 interface ModalProps {
   isOpen: boolean;
@@ -20,7 +28,7 @@ interface ModalProps {
 interface Event {
   id_evento?: string;
   cod_sala: number;
-  cod_usuario: number;
+  cod_usuario: string;
   data_evento: string;
   descricao_evento: string;
   titulo_evento: string;
@@ -34,7 +42,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0MjY5NzYsImV4cCI6MTYzNzUxMzM3Niwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.5zxm7FInoyIoInzbSz0RTHZEzq2c2mNUYUfDuAhYJro'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MTQ3NjIsImV4cCI6MTYzNzYwMTE2Miwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.zAJaoeVNRao_Ov9sdRwZvMyUUH0j2Y_oqXXAWe_ETgw'
     }
   }
 
@@ -58,7 +66,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
     catch {
       alert(`Problema ao consultar eventos`)
     }
-  }, [event])
+  }, [event, open, isOpen])
 
   function deleteEvent(id: string | undefined): void {
     const resp = window.confirm(`Confirma a exclusão do evento ${id}`)
@@ -122,17 +130,23 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
         <TableHead>
           <TableRow>
             <TableCell>Remover</TableCell>
+            <TableCell />
             <TableCell>Editar</TableCell>
+            <TableCell />
             <TableCell>Título</TableCell>
+            <TableCell />
             <TableCell>Sala</TableCell>
+            <TableCell />
             <TableCell>Cod Usuário</TableCell>
+            <TableCell />
             <TableCell>Data</TableCell>
+            <TableCell />
             <TableCell>Descrição</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {events.map(event => (
-            <TableRow key={event.id_evento}>
+            <StyledTableRow key={event.id_evento}>
               <TableCell align="center">
                 <AiOutlineCloseCircle
                   color="red"
@@ -140,19 +154,25 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
                   onClick={() => deleteEvent(event.id_evento)}
                 />
               </TableCell>
+              <TableCell />
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateEvent(event)} />
               </TableCell>
+              <TableCell />
               <TableCell>{event.titulo_evento}</TableCell>
+              <TableCell />
               <TableCell>{event.cod_sala}</TableCell>
+              <TableCell />
               <TableCell>{event.cod_usuario}</TableCell>
+              <TableCell />
               <TableCell>{moment(new Date(event.data_evento)).format("DD/MM/YYYY")}</TableCell>
+              <TableCell />
               <TableCell>{event.descricao_evento}</TableCell>
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
         {open && (
-          <TableContainer style={{background: "var(--backgroundBody)", borderRadius: "10px", marginTop: "10px", paddingBottom: "10px"}}>
+          <TableContainer style={{ background: "var(--backgroundBody)", marginTop: "10px", paddingBottom: "10px" }}>
             <Top>
               <h2>Editar</h2>
               <GrClose size={20} onClick={() => setOpen(false)} />
@@ -191,7 +211,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
               <TableCell>
                 <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Código usuário</Typography>
                 <Input
-                  type="number"
+                  type="text"
                   name="cod_usuario"
                   placeholder="Código usuário"
                   defaultValue={event.cod_usuario}

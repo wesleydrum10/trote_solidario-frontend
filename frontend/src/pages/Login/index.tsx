@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { useHistory } from 'react-router-dom';
 import logo from '../../assets/trote.png';
@@ -18,7 +18,7 @@ import {
 } from '../Login/styles';
 
 interface UserSession {
-  cod_usuario: number,
+  cod_usuario: string,
   password: string
 }
 
@@ -36,33 +36,25 @@ export function Login() {
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 
-    const data = Object.assign(login, {
+    const aux = Object.assign(login, {
       [e.target.name]: e.target.value,
     });
-    setLogin(data);
-  }
-
-  const config = {
-    headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU4ODMyOTMsImV4cCI6MTYzNTk2OTY5Mywic3ViIjoiOTcxZmZiYjYtNTk1Yi00NDg3LWEyZWUtMjM2NzlhM2JkMDNiIn0.6B1lKPspEHG-sjBeje2IdLe20v-dVhwJK9x6vIzJHnw'
-    }
+    setLogin(aux);
   }
 
   function handleLogin() {
-    console.log('HandleLogin')
+
     try {
-      api.post<UserSession>(`/session`, login )
+      api.post<String>(`/users/${login.cod_usuario}/${login.password}`)
         .then(response => {
-          if(response.data.cod_usuario === login.cod_usuario) {
-            console.log('Data', response.data.cod_usuario)
-            console.log('Login', login.cod_usuario)
+          if (response.data === "Usuário Ok") {
             history.push('/inicio')
-          } 
-          else { 
-            alert('Dados inválidos!')
+            return response.config
           }
-        }) 
-      history.push('/inicio')
+          else {
+            alert(response.data)
+          }
+        })
     }
     catch {
       alert(`Problema ao consultar usuário/senha`)
@@ -99,7 +91,7 @@ export function Login() {
           <Content>
             <Content>
               <Input
-                type="number"
+                type={seePass}
                 name="cod_usuario"
                 maxLength={16}
                 onChange={handleChange}
@@ -118,12 +110,12 @@ export function Login() {
               {!showPass ?
                 <Icons onClick={showPassword}>
                   <BsFillEyeFill size={15} />
-                  <Span>Mostrar senha</Span>
+                  <Span>Mostrar credenciais</Span>
                 </Icons>
                 :
                 <Icons onClick={hiddenPassword}>
                   <BsFillEyeSlashFill size={15} />
-                  <Span>Ocultar senha</Span>
+                  <Span>Ocultar credenciais</Span>
                 </Icons>
               }
             </Content>

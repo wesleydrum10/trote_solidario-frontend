@@ -11,10 +11,10 @@ interface ModalProps {
   onRequestClose: () => void;
 }
 
-interface Events {
+interface Event {
   id_evento?: string;
   cod_sala: number;
-  cod_usuario: number;
+  cod_usuario: string;
   data_evento: string;
   descricao_evento: string;
   titulo_evento: string;
@@ -22,11 +22,11 @@ interface Events {
 
 export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
-  const [event, setEvent] = useState<Events>({} as Events);
+  const [event, setEvent] = useState<Event>({} as Event);
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0MjY5NzYsImV4cCI6MTYzNzUxMzM3Niwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.5zxm7FInoyIoInzbSz0RTHZEzq2c2mNUYUfDuAhYJro'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MTQ3NjIsImV4cCI6MTYzNzYwMTE2Miwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.zAJaoeVNRao_Ov9sdRwZvMyUUH0j2Y_oqXXAWe_ETgw'
     }
   }
 
@@ -47,9 +47,9 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
     else if (!event.id_evento) {
       try {
         api
-          .post<Events>(`/events`, event, config)
+          .post<Event>(`/events`, event, config)
           .then(response => alert(`Inserção com sucesso`))
-        setEvent({} as Events);
+        setEvent({} as Event);
         onRequestClose(); 
       }
       catch {
@@ -102,7 +102,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
           <TableCell>
             <Input
               fullWidth
-              type="number"
+              type="text"
               name="cod_usuario"
               placeholder="Código usuário"
               defaultValue={event.cod_usuario}
@@ -122,7 +122,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
         </FormGroup>
         <Form>
           <button onClick={createEvent} type="submit">
-            Atualizar
+            Cadastrar
           </button>
         </Form>
       </>

@@ -3,15 +3,16 @@ import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
+import { FormGroup, Input, TableCell } from '@mui/material';
 
 interface ModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-interface People {
+interface User {
   id_usuario?: string;
-  cod_usuario: number;
+  cod_usuario: string;
   password: string;
   nome_usuario: string;
   ocupacao_usuario: string;
@@ -20,11 +21,11 @@ interface People {
 
 export const ModalUser: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
-  const [user, setUser] = useState<People>({} as People);
+  const [user, setUser] = useState<User>({} as User);
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU4ODMyOTMsImV4cCI6MTYzNTk2OTY5Mywic3ViIjoiOTcxZmZiYjYtNTk1Yi00NDg3LWEyZWUtMjM2NzlhM2JkMDNiIn0.6B1lKPspEHG-sjBeje2IdLe20v-dVhwJK9x6vIzJHnw'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MDM4MjIsImV4cCI6MTYzNzU5MDIyMiwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.96T5NpQy-q9zuLf6MO6ZtZdeZLH1MI4A4SRtBTzDskE'
     }
   }
 
@@ -37,17 +38,24 @@ export const ModalUser: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
     setUser(aux);
   }
 
-  function createUser(): void {
-    try {
-      api
-        .post<People>(`/users`, user)
-        .then(response => alert(`Inserção com sucesso`))
-      setUser({} as People);
-    }
-    catch {
-      alert(`Problema ao inserir usuário`)
-    }
+  function createUser(e: FormEvent): void {
+    e.preventDefault()
 
+    if (user.id_usuario) {
+      alert(`Este usuário já existe`)
+    }
+    else if (!user.id_usuario) {
+      try {
+        api
+          .post<User>(`/users`, user, config)
+          .then(response => alert(`Inserção com sucesso`))
+        setUser({} as User);
+        onRequestClose()
+      }
+      catch {
+        alert(`Problema ao inserir usuário`)
+      }
+    }
   }
 
   return (
@@ -56,50 +64,69 @@ export const ModalUser: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
     >
-      <Form>
-        <Top>
+      <>
+        <FormGroup row style={{ display: "flex", justifyContent: "space-between", margin: '0px 12px' }} onClick={() => onRequestClose()} >
           <h2>Cadastrar usuário</h2>
           <GrClose onClick={onRequestClose} size={20} />
-        </Top>
-        <input
-          type="text"
-          name="nome_usuario"
-          placeholder="Nome"
-          value={user.nome_usuario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="departamento_usuario"
-          placeholder="Departamento"
-          value={user.departamento_usuario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="ocupacao_usuario"
-          placeholder="Ocupação"
-          value={user.ocupacao_usuario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="password"
-          placeholder="Senha"
-          value={user.password}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="cod_usuario"
-          placeholder="Código"
-          value={user.cod_usuario}
-          onChange={handleChange}
-        />
-        <button onClick={createUser} type="submit">
-          Cadastrar
-        </button>
-      </Form>
+        </FormGroup>
+        <FormGroup style={{ fontFamily: "Roboto" }}>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="nome_usuario"
+              placeholder="Nome"
+              value={user.nome_usuario}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="departamento_usuario"
+              placeholder="Departamento"
+              value={user.departamento_usuario}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="ocupacao_usuario"
+              placeholder="Ocupação"
+              value={user.ocupacao_usuario}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="password"
+              placeholder="Senha"
+              value={user.password}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <TableCell>
+            <Input
+              fullWidth
+              type="text"
+              name="cod_usuario"
+              placeholder="Código"
+              value={user.cod_usuario}
+              onChange={handleChange}
+            />
+          </TableCell>
+          <Form>
+            <button onClick={createUser} type="submit">
+              Cadastrar
+            </button>
+          </Form>
+        </FormGroup>
+      </>
     </Modal >
   )
 }

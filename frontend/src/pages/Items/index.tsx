@@ -16,8 +16,8 @@ import {
   ButtonRight,
   ShowButton
 } from '../../components/LayoutDefault/styles';
-import { ModalProducts } from "../../components/Modal/ModalProducts"
-
+import { ModalProducts } from "../../components/Modal/ModalProducts/index"
+import { ModalConsultProducts } from "../../components/Modal/ModalProducts/consult"
 
 export const Items: React.FC = () => {
 
@@ -81,6 +81,10 @@ export const Items: React.FC = () => {
             <ModalProducts
               isOpen={open}
               onRequestClose={modalClose}
+            />
+            <ModalConsultProducts
+              isOpen={openConsult}
+              onRequestClose={modalCloseConsult}
             />
           </Container>
         }

@@ -12,8 +12,9 @@ import {
 import TemporaryDrawer from '../../components/Drawer'
 import { Button } from '../../components/Button'
 import { BsPersonPlus } from 'react-icons/bs';
-import { useEffect, useState } from 'react';
-import { ModalUser } from '../../components/Modal/ModalUsers';
+import { useState } from 'react';
+import { ModalUser } from '../../components/Modal/ModalUsers/index';
+import { ModalConsultUser } from '../../components/Modal/ModalUsers/consult';
 
 export const Participants: React.FC = () => {
 
@@ -68,7 +69,7 @@ export const Participants: React.FC = () => {
               </ButtonLeft>
               <ButtonRight>
                 <Button
-                  openModal={modalOpen}
+                  openModal={modalOpenConsult}
                   color="var(--blue)"
                   title="Consultar"
                 />
@@ -77,6 +78,10 @@ export const Participants: React.FC = () => {
             <ModalUser
               isOpen={open}
               onRequestClose={modalClose}
+            />
+            <ModalConsultUser
+              isOpen={openConsult}
+              onRequestClose={modalCloseConsult}
             />
           </Container>
         }

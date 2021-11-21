@@ -1,15 +1,24 @@
-import { useState, useEffect } from 'react';
-import { Container, Top } from '../stylesConsult'
+import { useState, useEffect, FormEvent } from 'react';
+import {Top } from '../stylesConsult'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api } from '../../../services/api';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
 import moment from 'moment';
-import { FormGroup, Input, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { FormGroup, Input, styled, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Form } from '../stylesModal';
 
 Modal.setAppElement('#root')
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: "var(--backgroundBody)",
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,7 +27,7 @@ interface ModalProps {
 
 interface Notice {
   id_aviso?: string;
-  cod_usuario: number;
+  cod_usuario: string;
   descricao_aviso: string;
   titulo_aviso: string;
   prazo_aviso: string;
@@ -30,12 +39,11 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
 
   const [notice, setNotice] = useState<Notice>({} as Notice);
   const [notices, setNotices] = useState<Notice[]>([]);
-
   const [open, setOpen] = useState(false);
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0NDE5MDQsImV4cCI6MTYzNzUyODMwNCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.tOZadxrP_1ZIMDCGgzdQNDPBSFHXF1oyqErsxZ0y4Ag'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MDM4MjIsImV4cCI6MTYzNzU5MDIyMiwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.96T5NpQy-q9zuLf6MO6ZtZdeZLH1MI4A4SRtBTzDskE'
     }
   }
 
@@ -59,7 +67,7 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
     catch {
       alert(`Problema ao consultar aviso`)
     }
-  }, [notice])
+  }, [notice, open, isOpen])
 
   function deleteNotice(id: string | undefined): void {
     const resp = window.confirm(`Confirma a exclusão do aviso ${id}`)
@@ -77,7 +85,8 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
 
   }
 
-  function updatedingNotice(): void {
+  function updatedingNotice(e: FormEvent): void {
+    e.preventDefault()
 
     let updateNotice = {
       cod_usuario: notice.cod_usuario,
@@ -135,7 +144,7 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
         </TableHead>
         <TableBody>
           {notices.map(notice => (
-            <TableRow key={notice.id_aviso}>
+            <StyledTableRow key={notice.id_aviso}>
               <TableCell align="center">
                 <AiOutlineCloseCircle
                   color="red"
@@ -152,16 +161,16 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
               <TableCell>{notice.cod_usuario}</TableCell>
               <TableCell>{notice.departamento_aviso}</TableCell>
               <TableCell>{notice.descricao_aviso}</TableCell>
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
         {open && (
-          <TableContainer style={{ background: "var(--backgroundBody)", borderRadius: "10px", marginTop: "10px", paddingBottom: "10px" }}>
+          <TableContainer style={{ background: "var(--backgroundBody)", marginTop: "10px", paddingBottom: "10px" }}>
             <Top>
               <h2>Editar</h2>
               <GrClose size={20} onClick={() => setOpen(false)} />
             </Top>
-            <FormGroup style={{ fontFamily: "Roboto" }}>
+            <FormGroup row style={{ fontFamily: "Roboto" }}>
               <TableCell>
                 <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Título</Typography>
                 <Input
@@ -199,7 +208,7 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
                 <Typography style={{ fontFamily: "Roboto", color: "var(--backgroundDark)", marginBottom: "10px" }}>Código usuário</Typography>
                 <Input
                   fullWidth
-                  type="number"
+                  type="text"
                   name="cod_usuario"
                   placeholder="Código usuário"
                   defaultValue={notice.cod_usuario}

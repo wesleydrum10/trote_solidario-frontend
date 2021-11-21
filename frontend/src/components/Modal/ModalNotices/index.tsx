@@ -13,7 +13,7 @@ interface ModalProps {
 
 interface Notice {
   id_aviso?: string;
-  cod_usuario: number;
+  cod_usuario: string;
   descricao_aviso: string;
   titulo_aviso: string;
   prazo_aviso: string;
@@ -27,7 +27,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
 
   const config = {
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc0NDE5MDQsImV4cCI6MTYzNzUyODMwNCwic3ViIjoiZmZmMzY1MzQtMjFkYi00YTIzLTk3ZDctMGU4NDhkYTI4N2YxIn0.tOZadxrP_1ZIMDCGgzdQNDPBSFHXF1oyqErsxZ0y4Ag'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MDM4MjIsImV4cCI6MTYzNzU5MDIyMiwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.96T5NpQy-q9zuLf6MO6ZtZdeZLH1MI4A4SRtBTzDskE'
     }
   }
 
@@ -40,7 +40,9 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
     setNotice(aux);
   }
 
-  function createEvent(): void {
+  function createEvent(e: FormEvent): void {
+    e.preventDefault()
+
     if (notice.id_aviso) {
       alert(`Este aviso já existe`)
     }
@@ -113,7 +115,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
           <TableCell>
             <Input
               fullWidth 
-              type="number"
+              type="text"
               name="cod_usuario"
               placeholder="Código usuário"
               defaultValue={notice.cod_usuario}

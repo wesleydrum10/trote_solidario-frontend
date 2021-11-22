@@ -71,7 +71,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
               type="text"
               name="titulo_aviso"
               placeholder="Título "
-              defaultValue={notice.titulo_aviso}
+              value={notice.titulo_aviso}
               onChange={handleChange}
             />
           </TableCell>
@@ -81,7 +81,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
               type="text"
               name="descricao_aviso"
               placeholder="Descrição"
-              defaultValue={notice.descricao_aviso}
+              value={notice.descricao_aviso}
               onChange={handleChange}
             />
           </TableCell>
@@ -91,7 +91,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
               type="text"
               name="data_aviso"
               placeholder="Data"
-              defaultValue={notice.data_aviso}
+              value={notice.data_aviso}
               onChange={handleChange}
             />
           </TableCell>
@@ -101,7 +101,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
               type="text"
               name="prazo_aviso"
               placeholder="Prazo máximo"
-              defaultValue={notice.prazo_aviso}
+              value={notice.prazo_aviso}
               onChange={handleChange}
             />
           </TableCell>
@@ -111,7 +111,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
               type="text"
               name="cod_usuario"
               placeholder="Código usuário"
-              defaultValue={notice.cod_usuario}
+              value={notice.cod_usuario}
               onChange={handleChange}
             />
           </TableCell>
@@ -121,7 +121,7 @@ export const ModalNotices: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =
               type="text"
               name="departamento_aviso"
               placeholder="Departamento"
-              defaultValue={notice.departamento_aviso}
+              value={notice.departamento_aviso}
               onChange={handleChange}
             />
           </TableCell>

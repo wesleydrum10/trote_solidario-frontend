@@ -70,7 +70,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
               type="text"
               name="titulo_evento"
               placeholder="Título "
-              defaultValue={event.titulo_evento}
+              value={event.titulo_evento}
               onChange={handleChange}
             />
           </TableCell>
@@ -80,7 +80,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
               type="text"
               name="descricao_evento"
               placeholder="Descrição"
-              defaultValue={event.descricao_evento}
+              value={event.descricao_evento}
               onChange={handleChange}
             />
           </TableCell>
@@ -99,7 +99,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
               type="text"
               name="cod_usuario"
               placeholder="Código usuário"
-              defaultValue={event.cod_usuario}
+              value={event.cod_usuario}
               onChange={handleChange}
             />
           </TableCell>
@@ -108,7 +108,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
               fullWidth
               type="number"
               name="cod_sala"
-              defaultValue={event.cod_sala}
+              value={event.cod_sala}
               placeholder="Número da sala"
               onChange={handleChange}
             />

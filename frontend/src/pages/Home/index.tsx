@@ -42,7 +42,7 @@ export const Home: React.FC = () => {
                   }
                   next={<AiOutlineRight size={20} />}
                   title={"Participantes"}
-                  description="Consulte, adicione, remova e atualize os participantes do evento."
+                  description="Consulte, adicione, remova e atualize os participantes do projeto."
                 />
               </Card1>
             </Link>

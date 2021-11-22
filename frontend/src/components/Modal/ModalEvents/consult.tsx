@@ -126,15 +126,21 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
           <TableRow>
             <TableCell>Remover</TableCell>
             <TableCell />
+            <TableCell />
             <TableCell>Editar</TableCell>
+            <TableCell />
             <TableCell />
             <TableCell>Título</TableCell>
             <TableCell />
+            <TableCell />
             <TableCell>Sala</TableCell>
+            <TableCell />
             <TableCell />
             <TableCell>Cod Usuário</TableCell>
             <TableCell />
+            <TableCell />
             <TableCell>Data</TableCell>
+            <TableCell />
             <TableCell />
             <TableCell>Descrição</TableCell>
           </TableRow>
@@ -150,17 +156,23 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
                 />
               </TableCell>
               <TableCell />
+              <TableCell />
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateEvent(event)} />
               </TableCell>
               <TableCell />
+              <TableCell />
               <TableCell>{event.titulo_evento}</TableCell>
               <TableCell />
-              <TableCell>{event.cod_sala}</TableCell>
               <TableCell />
-              <TableCell>{event.cod_usuario}</TableCell>
+              <TableCell align="center">{event.cod_sala}</TableCell>
+              <TableCell />
+              <TableCell />
+              <TableCell align="center">{event.cod_usuario}</TableCell>
+              <TableCell />
               <TableCell />
               <TableCell>{moment(new Date(event.data_evento)).format("DD/MM/YYYY")}</TableCell>
+              <TableCell />
               <TableCell />
               <TableCell>{event.descricao_evento}</TableCell>
             </StyledTableRow>

@@ -166,6 +166,9 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
               <TableCell/>
               <TableCell/>
               <TableCell>{product.descricao_produto}</TableCell>
+              <TableCell/>
+              <TableCell/>
+              <TableCell/>
             </StyledTableRow>
           ))}
         </TableBody>

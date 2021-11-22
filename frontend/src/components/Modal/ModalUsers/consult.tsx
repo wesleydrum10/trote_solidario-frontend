@@ -124,15 +124,21 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
           <TableRow>
             <TableCell>Remover</TableCell>
             <TableCell/>
+            <TableCell/>
             <TableCell>Editar</TableCell>
+            <TableCell/>
             <TableCell/>
             <TableCell>Nome</TableCell>
             <TableCell/>
+            <TableCell/>
             <TableCell>Departamento</TableCell>
+            <TableCell/>
             <TableCell/>
             <TableCell>Ocupação</TableCell>
             <TableCell/>
+            <TableCell/>
             <TableCell>Cód usuário</TableCell>
+            <TableCell/>
             <TableCell/>
             <TableCell>Senha</TableCell>
           </TableRow>
@@ -148,17 +154,23 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
                 />
               </TableCell>
               <TableCell/>
+              <TableCell/>
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateUser(user)} />
               </TableCell>
               <TableCell/>
+              <TableCell/>
               <TableCell>{user.nome_usuario}</TableCell>
+              <TableCell/>
               <TableCell/>
               <TableCell>{user.departamento_usuario}</TableCell>
               <TableCell/>
-              <TableCell>{user.ocupacao_usuario}</TableCell>
               <TableCell/>
-              <TableCell>{user.cod_usuario}</TableCell>
+              <TableCell >{user.ocupacao_usuario}</TableCell>
+              <TableCell/>
+              <TableCell/>
+              <TableCell align="center">{user.cod_usuario}</TableCell>
+              <TableCell/>
               <TableCell/>
               <TableCell>******</TableCell>
             </StyledTableRow>

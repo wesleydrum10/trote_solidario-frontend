@@ -31,3 +31,20 @@ export const Top = styled.div `
   padding: 1rem; 
 
 `
+export const BoxNoData = styled.div `
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  width: 100%;
+
+  p {
+    color: var(--backgroundDark);
+    font-size: 1.2rem;
+
+    @media(min-width: 769px) {
+      font-size: 2rem;
+    }
+  }
+
+`

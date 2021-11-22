@@ -2,7 +2,7 @@ import { FormEvent, useState, useContext } from 'react';
 import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
-import { api } from '../../../services/api';
+import { api, config } from '../../../services/api';
 import { FormGroup, Input, TableCell } from '@mui/material';
 
 interface ModalProps {
@@ -22,13 +22,6 @@ interface User {
 export const ModalUser: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
   const [user, setUser] = useState<User>({} as User);
-
-  const config = {
-    headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MDM4MjIsImV4cCI6MTYzNzU5MDIyMiwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.96T5NpQy-q9zuLf6MO6ZtZdeZLH1MI4A4SRtBTzDskE'
-    }
-  }
-
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const aux = Object.assign(user, {

@@ -2,10 +2,11 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
-import { api } from '../../../services/api';
+import { api, config } from '../../../services/api';
 import { FormGroup, Input, styled, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
+import { NoData } from '../../Empty';
 
 Modal.setAppElement('#root')
 
@@ -37,12 +38,6 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
   const [user, setUser] = useState<User>({} as User);
   const [users, setUsers] = useState<User[]>([]);
   const [open, setOpen] = useState(false);
-
-  const config = {
-    headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MDM4MjIsImV4cCI6MTYzNzU5MDIyMiwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.96T5NpQy-q9zuLf6MO6ZtZdeZLH1MI4A4SRtBTzDskE'
-    }
-  }
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const aux = Object.assign(user, {
@@ -169,6 +164,9 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
             </StyledTableRow>
           ))}
         </TableBody>
+        {!users.length && (
+          <NoData />
+        )}
         {open && (
           <TableContainer style={{ background: "var(--backgroundBody)", marginTop: "10px", paddingBottom: "10px" }}>
             <Top>

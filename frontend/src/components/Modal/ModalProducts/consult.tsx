@@ -2,10 +2,11 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Form, Top } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
-import { api } from '../../../services/api';
+import { api, config } from '../../../services/api';
 import { FormGroup, Input, styled, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
+import { NoData } from '../../Empty';
 
 Modal.setAppElement('#root')
 
@@ -36,12 +37,6 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
   const [product, setProduct] = useState<Product>({} as Product);
   const [products, setProducts] = useState<Product[]>([]);
   const [open, setOpen] = useState(false);
-
-  const config = {
-    headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc1MDM4MjIsImV4cCI6MTYzNzU5MDIyMiwic3ViIjoiNDQ2YWM2MzctZGFiNy00OWE2LTljMzEtMGE5YTIyMGMwYzkwIn0.96T5NpQy-q9zuLf6MO6ZtZdeZLH1MI4A4SRtBTzDskE'
-    }
-  }
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const aux = Object.assign(product, {
@@ -127,10 +122,20 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
         <TableHead>
           <TableRow>
             <TableCell>Remover</TableCell>
+            <TableCell/>
+            <TableCell/>
             <TableCell>Editar</TableCell>
+            <TableCell/>
+            <TableCell/>
             <TableCell>Nome</TableCell>
+            <TableCell/>
+            <TableCell/>
             <TableCell>Cód usuário</TableCell>
+            <TableCell/>
+            <TableCell/>
             <TableCell>Quantidade</TableCell>
+            <TableCell/>
+            <TableCell/>
             <TableCell>Descrição</TableCell>
           </TableRow>
         </TableHead>
@@ -144,16 +149,29 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
                   onClick={() => deleteProduct(product.id_produto)}
                 />
               </TableCell>
+              <TableCell/>
+              <TableCell/>
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateProduct(product)} />
               </TableCell>
+              <TableCell/>
+              <TableCell/>
               <TableCell>{product.nome_produto}</TableCell>
-              <TableCell >{product.cod_usuario}</TableCell>
-              <TableCell>{product.quantidade_produto}</TableCell>
+              <TableCell/>
+              <TableCell/>
+              <TableCell align="center">{product.cod_usuario}</TableCell>
+              <TableCell/>
+              <TableCell/>
+              <TableCell align="center">{product.quantidade_produto}</TableCell>
+              <TableCell/>
+              <TableCell/>
               <TableCell>{product.descricao_produto}</TableCell>
             </StyledTableRow>
           ))}
         </TableBody>
+        {!products.length && (
+          <NoData />
+        )}
         {open && (
           <TableContainer style={{ background: "var(--backgroundBody)", marginTop: "10px", paddingBottom: "10px" }}>
             <Top>

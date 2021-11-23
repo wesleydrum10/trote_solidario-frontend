@@ -90,6 +90,7 @@ export const ModalEvents: React.FC<ModalProps> = ({ isOpen, onRequestClose }) =>
               type="text"
               name="data_evento"
               placeholder="Data  dd/mm/aaaa"
+              value={event.data_evento}
               onChange={handleChange}
             />
           </TableCell>

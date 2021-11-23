@@ -15,15 +15,16 @@ import {
 } from '../../components/LayoutDefault/styles'
 import { ModalEvents } from "../../components/Modal/ModalEvents/index"
 import { ModalEventsConsult } from "../../components/Modal/ModalEvents/consult"
+import { EventsProvider } from '../../hooks/useEvent'
 
 export const Events: React.FC = () => {
 
   const [open, setOpen] = useState(false)
   const [openConsult, setOpenConsult] = useState(false)
 
-  useEffect(() =>{
+  useEffect(() => {
 
-  },[open, openConsult])
+  }, [open, openConsult])
 
   function modalOpen() {
     setOpen(true)
@@ -42,55 +43,57 @@ export const Events: React.FC = () => {
   }
 
   return (
-    <LayoutDefault
-      header={
-        <Header
-          title="Eventos"
-          children={
-            <TemporaryDrawer />
-          }
-        />
-      }
-      section={
-        <Container>
-          <Card1>
-            <CardLight
-              children={
-                <BsCalendarDate />
-              }
-              title="Eventos"
-              description="Seja bem vindo!"
+    <EventsProvider>
+      <LayoutDefault
+        header={
+          <Header
+            title="Eventos"
+            children={
+              <TemporaryDrawer />
+            }
+          />
+        }
+        section={
+          <Container>
+            <Card1>
+              <CardLight
+                children={
+                  <BsCalendarDate />
+                }
+                title="Eventos"
+                description="Seja bem vindo!"
+              />
+            </Card1>
+            <ShowButton>
+              <ButtonLeft>
+                <Button
+                  openModal={modalOpen}
+                  color="var(--green)"
+                  title="Adicionar"
+                />
+              </ButtonLeft>
+              <ButtonRight>
+                <Button
+                  openModal={modalOpenConsult}
+                  color="var(--blue)"
+                  title="Consultar"
+                />
+              </ButtonRight>
+            </ShowButton>
+            <ModalEvents
+              isOpen={open}
+              onRequestClose={modalClose}
             />
-          </Card1>
-          <ShowButton>
-            <ButtonLeft>
-              <Button
-                openModal={modalOpen}
-                color="var(--green)"
-                title="Adicionar"
-              />
-            </ButtonLeft>
-            <ButtonRight>
-              <Button
-                openModal={modalOpenConsult}
-                color="var(--blue)"
-                title="Consultar"
-              />
-            </ButtonRight>
-          </ShowButton>
-          <ModalEvents
-            isOpen={open}
-            onRequestClose={modalClose}
-          />
-          <ModalEventsConsult
-            isOpen={openConsult}
-            onRequestClose={modalCloseConsult}
-          />
-        </Container>
-      }
-      footer={
-        <Footer />
-      }
-    />
+            <ModalEventsConsult
+              isOpen={openConsult}
+              onRequestClose={modalCloseConsult}
+            />
+          </Container>
+        }
+        footer={
+          <Footer />
+        }
+      />
+    </EventsProvider>
   )
 }

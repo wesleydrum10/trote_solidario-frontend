@@ -61,7 +61,7 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
   }, [product, open, isOpen])
 
   function deleteProduct(id: string | undefined): void {
-    const resp = window.confirm(`Confirma a exclusão do produto ${id}`)
+    const resp = window.confirm(`Confirma a exclusão do produto ?`)
     if (resp) {
       try {
         api
@@ -122,24 +122,11 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
         <TableHead>
           <TableRow>
             <TableCell>Remover</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Editar</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Nome</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Cód usuário</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Quantidade</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Descrição</TableCell>
-            <TableCell/>
-            <TableCell/>
-            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -152,26 +139,13 @@ export const ModalConsultProducts: React.FC<ModalProps> = ({ isOpen, onRequestCl
                   onClick={() => deleteProduct(product.id_produto)}
                 />
               </TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateProduct(product)} />
               </TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell>{product.nome_produto}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell align="center">{product.cod_usuario}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell align="center">{product.quantidade_produto}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell>{product.descricao_produto}</TableCell>
-              <TableCell/>
-              <TableCell/>
-              <TableCell/>
             </StyledTableRow>
           ))}
         </TableBody>

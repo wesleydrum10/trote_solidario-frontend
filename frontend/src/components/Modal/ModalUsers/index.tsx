@@ -1,5 +1,5 @@
 import { FormEvent, useState, useContext } from 'react';
-import { Form, Top } from '../stylesModal'
+import { Form } from '../stylesModal'
 import Modal from 'react-modal';
 import { GrClose } from 'react-icons/gr'
 import { api, config } from '../../../services/api';

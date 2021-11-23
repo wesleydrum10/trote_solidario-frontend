@@ -65,7 +65,7 @@ export const ModalNoticesConsult: React.FC<ModalProps> = ({ isOpen, onRequestClo
   }, [notice, open, isOpen])
 
   function deleteNotice(id: string | undefined): void {
-    const resp = window.confirm(`Confirma a exclusão do aviso ${id}`)
+    const resp = window.confirm(`Confirma a exclusão do aviso ?`)
     if (resp) {
       try {
         api

@@ -7,8 +7,9 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
 import { Form } from '../stylesModal';
 import moment from 'moment';
-import { FormGroup, Input, styled, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { FormGroup, Input, styled, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { NoData } from '../../Empty';
+import { useEvents } from '../../../hooks/useEvent';
 
 Modal.setAppElement('#root')
 
@@ -37,9 +38,12 @@ interface Event {
 
 export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
 
+  const eventContext = useEvents();
   const [event, setEvent] = useState<Event>({} as Event);
-  const [events, setEvents] = useState<Event[]>([]);
+  const events = eventContext.events;
   const [open, setOpen] = useState(false);
+  const { deleteEvent } = useEvents();
+  const { getEvent } = useEvents();
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const aux = Object.assign(event, {
@@ -50,34 +54,8 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
   }
 
   useEffect(() => {
-    try {
-      api
-        .get<Event[]>(`/events`, config)
-        .then(response => setEvents(response.data))
-        .catch(() => {
-          console.error('Não listou os eventos')
-        })
-    }
-    catch {
-      alert(`Problema ao consultar eventos`)
-    }
-  }, [event, open, isOpen])
-
-  function deleteEvent(id: string | undefined): void {
-    const resp = window.confirm(`Confirma a exclusão do evento ${id}`)
-    if (resp) {
-      try {
-        api
-          .delete<Event>(`/events/${id}`, config)
-          .then(response => alert(`Remoção com sucesso `))
-        setEvent({} as Event);
-      }
-      catch {
-        alert(`Problema ao remover evento`)
-      }
-    }
-
-  }
+    getEvent();
+  }, [isOpen, events, open])
 
   function updatedingEvent(): void {
 
@@ -125,23 +103,11 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
         <TableHead>
           <TableRow>
             <TableCell>Remover</TableCell>
-            <TableCell />
-            <TableCell />
             <TableCell>Editar</TableCell>
-            <TableCell />
-            <TableCell />
             <TableCell>Título</TableCell>
-            <TableCell />
-            <TableCell />
             <TableCell>Sala</TableCell>
-            <TableCell />
-            <TableCell />
             <TableCell>Cod Usuário</TableCell>
-            <TableCell />
-            <TableCell />
             <TableCell>Data</TableCell>
-            <TableCell />
-            <TableCell />
             <TableCell>Descrição</TableCell>
           </TableRow>
         </TableHead>
@@ -155,25 +121,13 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
                   onClick={() => deleteEvent(event.id_evento)}
                 />
               </TableCell>
-              <TableCell />
-              <TableCell />
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateEvent(event)} />
               </TableCell>
-              <TableCell />
-              <TableCell />
               <TableCell>{event.titulo_evento}</TableCell>
-              <TableCell />
-              <TableCell />
               <TableCell align="center">{event.cod_sala}</TableCell>
-              <TableCell />
-              <TableCell />
               <TableCell align="center">{event.cod_usuario}</TableCell>
-              <TableCell />
-              <TableCell />
               <TableCell>{moment(new Date(event.data_evento)).format("DD/MM/YYYY")}</TableCell>
-              <TableCell />
-              <TableCell />
               <TableCell>{event.descricao_evento}</TableCell>
             </StyledTableRow>
           ))}

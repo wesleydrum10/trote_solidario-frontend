@@ -62,7 +62,7 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
   }, [user, open, isOpen])
 
   function deleteUser(id: string | undefined): void {
-    const resp = window.confirm(`Confirma a exclusão do usuário ${id}`)
+    const resp = window.confirm(`Confirma a exclusão do usuário ?`)
     if (resp) {
       try {
         api
@@ -123,23 +123,11 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
         <TableHead>
           <TableRow>
             <TableCell>Remover</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Editar</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Nome</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Departamento</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Ocupação</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Cód usuário</TableCell>
-            <TableCell/>
-            <TableCell/>
             <TableCell>Senha</TableCell>
           </TableRow>
         </TableHead>
@@ -153,25 +141,13 @@ export const ModalConsultUser: React.FC<ModalProps> = ({ isOpen, onRequestClose 
                   onClick={() => deleteUser(user.id_usuario)}
                 />
               </TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell align="center">
                 <FiEdit2 onClick={() => updateUser(user)} />
               </TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell>{user.nome_usuario}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell>{user.departamento_usuario}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell >{user.ocupacao_usuario}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell align="center">{user.cod_usuario}</TableCell>
-              <TableCell/>
-              <TableCell/>
               <TableCell>******</TableCell>
             </StyledTableRow>
           ))}

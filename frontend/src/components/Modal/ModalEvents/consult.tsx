@@ -55,7 +55,7 @@ export const ModalEventsConsult: React.FC<ModalProps> = ({ isOpen, onRequestClos
 
   useEffect(() => {
     getEvent();
-  }, [isOpen, events, open])
+  }, [isOpen, open])
 
   function updatedingEvent(): void {
 

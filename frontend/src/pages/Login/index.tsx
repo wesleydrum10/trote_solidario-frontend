@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/trote.png';
 import { api } from '../../services/api';
 import {
@@ -26,13 +26,9 @@ export function Login() {
 
   const [seePass, setSeePass] = useState('password')
   const [showPass, setShowPass] = useState(false)
-  const [cod, setCod] = useState('')
 
   const [login, setLogin] = useState<UserSession>({} as UserSession)
-  const history = useHistory()
-
-  console.log('Cod_usuario', login.cod_usuario)
-  console.log('Password', login.password)
+  const history = useNavigate()
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 
@@ -48,7 +44,7 @@ export function Login() {
       api.post<String>(`/users/${login.cod_usuario}/${login.password}`)
         .then(response => {
           if (response.data === "Usuário Ok") {
-            history.push('/inicio')
+            history('/inicio')
             return response.config
           }
           else {

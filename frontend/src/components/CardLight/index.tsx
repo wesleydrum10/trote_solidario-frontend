@@ -1,36 +1,28 @@
-import React from 'react';
-import { useHistory } from 'react-router';
-import Typist from 'react-typist';
-import {
-  CardL,
-  Description,
-  Icon,
-  TitleCard,
-  Next
-} from './styles';
+import React from "react";
+import Typist from "react-typist";
+import { CardL, Description, Icon, TitleCard, Next } from "./styles";
 
 type Props = {
-  next?: JSX.Element,
-  title: string,
-  description?: string,
-  children: JSX.Element,
+  next?: JSX.Element;
+  title: string;
+  description?: string;
+  children: JSX.Element;
 };
 
-export const CardLight: React.FC<Props> = ({ children, title, description, next }) => {
-
-  const history = useHistory();
-  const pathname = history.location.pathname.slice(1).toUpperCase()
-  console.log('history', history.location.pathname)
-  console.log('path', pathname)
+export const CardLight: React.FC<Props> = ({
+  children,
+  title,
+  description,
+  next,
+}) => {
+  const pathname = window.location.pathname.slice(1).toUpperCase()
 
   return (
     <>
-      {title.toUpperCase() !== pathname ?
+      {title.toUpperCase() !== pathname ? (
         <CardL>
           <Next>{next}</Next>
-          <Icon>
-            {children}
-          </Icon>
+          <Icon>{children}</Icon>
           <TitleCard>{title}</TitleCard>
           <Description>
             <Typist>
@@ -39,12 +31,10 @@ export const CardLight: React.FC<Props> = ({ children, title, description, next 
             </Typist>
           </Description>
         </CardL>
-        :
-        <CardL style={{ border: '2px solid transparent' }}>
+      ) : (
+        <CardL style={{ border: "2px solid transparent", cursor: 'default' }}>
           <Next>{next}</Next>
-          <Icon>
-            {children}
-          </Icon>
+          <Icon>{children}</Icon>
           <TitleCard>{title}</TitleCard>
           <Description>
             <Typist>
@@ -53,7 +43,7 @@ export const CardLight: React.FC<Props> = ({ children, title, description, next 
             </Typist>
           </Description>
         </CardL>
-      }
+      )}
     </>
-  )
-}
+  );
+};

@@ -33,7 +33,6 @@ export function EventsProvider({ children }: EventsProviderProps) {
 
   useEffect(() => {
     getEvent()
-    console.log('Chamando aqui')
   }, [event])
 
   function getEvent() {
